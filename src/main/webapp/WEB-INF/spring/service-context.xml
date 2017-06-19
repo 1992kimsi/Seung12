@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<tx:annotation-driven transaction-manager="transactionManager"/>
+	
+	 <bean name="oracledataSource"
+      class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+      <property name="driverClassName" value="oracle.jdbc.driver.OracleDriver" />
+      <property name="url"
+         value="jdbc:oracle:thin:@211.238.142.251:1521:orcl" />
+      <property name="username" value="c##sist" />
+      <property name="password" value="dclass" />
+   </bean>
+
+	<bean name="dataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
+		<property name="url"
+			value="jdbc:mysql://211.238.142.84/newlecture?autoReconnect=true&amp;useSSL=false&amp;characterEncoding=UTF-8" />
+		<property name="username" value="sist" />
+		<property name="password" value="sclass" />
+	</bean>
+
+	<bean id="sqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="sqlSessionFactory" />
+	</bean>
+
+	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="dataSource" />
+		<property name="mapperLocations"
+			value="classpath:com/newlecture/web/dao/mybatis/mapper/*.xml" />
+	</bean>
+
+	<bean class="com.newlecture.web.dao.mybatis.MyBatisLanguageDao" />	
+	<bean class="com.newlecture.web.dao.mybatis.MyBatisLectureDao" />
+	<bean class="com.newlecture.web.dao.mybatis.MyBatisLectureLanguageDao" />
+	<bean class="com.newlecture.web.dao.mybatis.MyBatisLecturePlatformDao" />
+	<bean class="com.newlecture.web.dao.mybatis.MyBatisLevelDao" />
+	<!-- <bean class="com.newlecture.web.dao.mybatis.MyBatisMemberDao" /> -->
+	<bean class="com.newlecture.web.dao.mybatis.MyBatisMemberRoleDao" />
+	<bean class="com.newlecture.web.dao.mybatis.MyBatisNoticeDao" />
+	<bean class="com.newlecture.web.dao.mybatis.MyBatisNoticeFileDao" />
+	<bean class="com.newlecture.web.dao.mybatis.MyBatisPlatformDao" />
+	<bean class="com.newlecture.web.dao.mybatis.MyBatisChapterDao" />
+	<bean class="com.newlecture.web.dao.mybatis.MyBatisUnitDao" />	
+	
+	<bean name="springMemberDao" class="com.newlecture.web.dao.spring.SpringMemberDao">
+		<property name="dataSource" ref="oracledataSource"></property>
+	</bean>	
+	
+	<bean name="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager" >
+		<property name="dataSource" ref="oracledataSource"></property>
+	</bean>
+	
+	<!-- 템플릿의 역할만 하고, 그 역할을 제한하지 않기 위해 가져다 쓴다 -->
+	<bean class="org.springframework.transaction.support.TransactionTemplate">
+		<property name="transactionManager" ref="transactionManager"/>
+	</bean>
+	
+	<!-- 4. <bean name="transactionInterceptor" 
+		class="org.springframework.transaction.interceptor.TransactionInterceptor">
+		<property name="transactionManager" ref="transactionManager"/>
+		<property name="transactionAttributes">
+			<props>
+				getList함수에 트랜직션이 필요합니다. -> 이 지목방법을 메서드에 어노테이션으로 바꿔본다. @Transactional
+				<prop key="getList">PROPAGATION_REQUIRED</prop>
+				<prop key="getMember">PROPAGATION_REQUIRED</prop>
+			</props>
+		</property>
+	</bean> -->
+	
+	<!-- <bean name="memberDao" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="target" ref="springMemberDao" />
+		<property name="interceptorNames">
+			<list>
+				<value>transactionInterceptor</value>
+			</list>
+		</property>
+	</bean> -->
+	
+	<context:annotation-config /><!-- Autowired가 필요한 곳에서 설정함 -->
+	<bean class="com.newlecture.web.service.AdminService" />
+	<bean class="com.newlecture.web.service.TeacherService" />
+	
+	
+</beans>

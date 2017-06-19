@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newlecture.web.dao.LectureLanguageDao">
+   
+   <select id="getList" resultType="com.newlecture.web.entity.LectureLanguage">
+      SELECT *
+	  FROM LectureLanguage
+	  WHERE lectrueId=#{lectureId}
+   </select>
+   
+   <select id="get" resultType="com.newlecture.web.entity.LectureLanguage">
+		SELECT *
+	 	FROM LectureLanguage
+		WHERE lectureId = #{lectureId} AND languageId = #{languageId}
+	</select>
+	
+    <insert id="add" parameterType="com.newlecture.web.entity.LectureLanguage">
+       <selectKey order="BEFORE" keyProperty="id" resultType="String">
+         select max(cast(id as unsigned))+1 id from LectureLanguage
+      </selectKey>
+     	 INSERT INTO LectureLanguage		
+		VALUES
+		(#{lectureId},
+		#{languageId})
+   </insert>
+   
+   <update id="update" parameterType="com.newlecture.web.entity.LectureLanguage">
+      UPDATE LectureLanguage
+		SET
+		lectureId = #{lectureId},
+		languageId = #{languageId}>
+	  WHERE lectureId = #{lectureId} AND languageId = #{languageId}
+   </update>
+
+   <delete id="delete">
+     DELETE FROM LectureLanguage
+	 WHERE lectureId = #{lectureId} AND languageId = #{languageId}   
+   </delete>
+</mapper>

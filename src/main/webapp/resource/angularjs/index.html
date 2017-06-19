@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="css/style.css" type="text/css" rel="stylesheet">
+	<script>
+		window.addEventListener("load", function () {
+			var banner = document.querySelector(".banner");
+			var prevButton = document.querySelector(".mov-button .prev-button");
+			var nextButton = document.querySelector(".mov-button .next-button");
+			var moreVertButton = document.querySelector(".more-vert-button");
+			var visual = document.querySelector("#visual");
+			var mainMenu = document.querySelector("#main-menu");
+			var mainMenuList = document.querySelector("#main-menu > ul");
+			// var none=1;
+			var hamburgerButton = document.querySelector(".hamburger-button");
+			var sideMenu = document.querySelector(".side-menu");
+			var sideScreen = document.createElement("div");
+
+			banner.style.left = "0%";
+
+			mainMenu.style.display = "block";
+			mainMenu.style.position = "absolute";
+			mainMenu.style.left = "0px";
+			mainMenu.style.top = "50px";
+			mainMenu.style.width = "100%";
+			mainMenu.style.height = "0px";
+			mainMenuList.style.display = "none";
+
+			sideScreen.style.width = "100%";
+			sideScreen.style.height = "100%";
+			sideScreen.style.position = "fixed";
+			sideScreen.style.background = "#000";
+			sideScreen.style.top = "0px";
+			sideScreen.style.left = "0px";
+			sideScreen.style.zIndex = "101";
+			sideScreen.style.opacity = "0.5";
+			sideScreen.style.display = "none";
+
+			sideMenu.parentElement.insertBefore(sideScreen, sideMenu);
+
+			sideScreen.addEventListener("click", function(){
+				sideScreen.style.display = "none";
+				sideMenu.style.left="-70%";
+			});
+
+			prevButton.addEventListener("click", function () {
+				if(parseInt(banner.style.left) == 0){
+				banner.style.width = "400%";
+				banner.style.transitionProperty="margin-Top, left";
+				banner.style.left = parseInt(banner.style.left) + 100 + "%";
+				
+				//만들어서 붙히기
+				var last = banner.querySelector("li:first-child");
+				var clone = last.cloneNode(true);
+				banner.insertBefore(clone, banner.childNodes[0]);
+
+				setTimeout(function(){
+					banner.style.left="-300%";
+					banner.style.transitionProperty="none";
+				}, 500);
+				}
+			
+			});
+
+			nextButton.addEventListener("click", function () {			
+				if (parseInt(banner.style.left) >= -199) {
+					banner.style.transitionProperty="margin-Top, left";
+					banner.style.left = parseInt(banner.style.left) - 100 + "%";
+				//세번째 클릭
+				}else if(-200 <= parseInt(banner.style.left)){
+					banner.style.transitionProperty="margin-Top, left";
+
+					banner.style.left = parseInt(banner.style.left) - 100 + "%";
+
+					banner.style.width = "400%";
+
+					if(!banner.contains(banner.querySelector("li:nth-child(4)"))){
+						//첫번째 노드 마지막 노드로 복사(clone, appendChild() )
+						var li = banner.querySelector("li:first-child");
+						var clone = li.cloneNode(true);
+						banner.appendChild(clone);
+						setTimeout(function(){
+							banner.style.transitionProperty="none";
+							banner.style.left="0%";
+						}, 500);
+					}else{
+						setTimeout(function(){
+							var li = banner.querySelector("li:first-child");
+							var clone = li.cloneNode(true);
+							banner.appendChild(clone);
+
+							banner.querySelector("li:nth-child(4)").remove();
+							banner.style.transitionProperty="none";
+							banner.style.left="0%";
+						}, 500);
+					}
+				}
+			});
+
+			moreVertButton.addEventListener("click", function () {
+				// if(none == 1){
+				//높이가 0이면으로 none 변수를 쓰지 않고 해결했다.
+				if (parseInt(mainMenu.style.height) == 0) {
+					visual.style.marginTop = "30px";
+					mainMenu.style.height = "30px";
+
+					setTimeout(function () {
+						mainMenuList.style.display = "flex";
+					}, 500);
+					// none = 0;
+				} else {
+					mainMenuList.style.display = "none";
+					visual.style.marginTop = "0px";
+					mainMenu.style.height = "0px";
+
+					// none = 1;
+				}
+			});
+			hamburgerButton.onclick = function(){
+				sideScreen.style.display= "block";
+
+				sideMenu.style.left="0%";
+				hamburgerButton.style.zindex="1";
+			};
+
+		});
+
+	/*
+	window.addEventListener("scroall", function(){
+		//엣지 or 크롬 or 사파리에서 되는 스크롤 찍기
+		//console.log(document.scrollingElement.scrollTop); 
+		
+		var header = document.querySelector("#header");
+      
+    	if(document.scrollingElement.scrollTop > 50)
+         header.style.position = "fixed";
+    	else
+         header.style.position = "static";
+		
+		//console.log(document.body.scrollTop);
+		//console.log(document.documentElement.scrollTop);
+	}); */
+	</script>
+
+	<title>Insert title here</title>
+</head>
+<div id="header">
+	<div><img class="hamburger-button" src="images/ic_menu_black_48dp_1x.png" /></div>
+	<div class="content-container">
+		<h1>
+			<a><img src="images/logo.png" /></a>
+		</h1>
+		<section>
+			<nav id="main-menu">
+				<h1 class="hidden">메인메뉴</h1>
+				<ul>
+					<li><a href="">학습가이드</a></li>
+					<li><a href="">뉴렉과정</a></li>
+					<li><a href="">강좌선택</a></li>
+				</ul>
+			</nav>
+			<nav>
+
+			<div class="side-menu">
+				<nav id="account-menu" class="hr-menu">
+					<h1 class="hidden">계정메뉴</h1>
+					<ul>
+						<li><a href="../index.html">HOME</a></li>
+						<li><a href="../account/login.html">로그인</a></li>
+						<li><a href="../join.html">회원가입</a></li>
+					</ul>
+				</nav>
+
+				<nav id="member-menu" class="hr-menu">
+					<h1 class="hidden">회원메뉴</h1>
+					<ul>
+						<li><input type="button" value="마이페이지" /></li>
+						<li><input type="button" value="고객 센터" /></li>
+					</ul>
+				</nav>
+				
+				<input class="hamburger-button" type="button" value="닫기" />
+			</div>
+			
+			</nav>
+		</section>
+	</div>
+	<div><img src="images/ic_search_black_48dp_1x.png" /></div>
+	<div class="more-button">
+		<img class="more-vert-button" src="images/ic_more_vert_black_24dp_1x.png" /></div>
+</div>
+<div id="visual">
+	<h2 class="hidden">신규강좌목록</h2>
+	<ul class="banner">
+		<li style='background: url("images/lecture/banner-spring180.png") no-repeat center; background-size:cover;'>
+			<a href=""></a>
+		</li>
+		<li style='background: url("images/lecture/banner-javascript180.png") no-repeat center; background-size:cover;'>
+			<a href=""></a>
+		</li>
+		<li style='background: url("images/lecture/banner-oracle180.png") no-repeat center; background-size:cover;'>
+			<a href=""> </a>
+		</li>
+	</ul>
+	<ul class="mov-button">
+		<li class="prev-button">이전</li>
+		<li class="next-button">다음</li>
+	</ul>
+
+	<div><img src="images/ic_search_black_24dp_1x.png" /></div>
+
+</div>
+
+<!--  원래 50번째 줄 alert(mainCategory.value);
+	div로 구현한 경우에는 이렇게 데이터를 뽑아볼수있다. -> alert(event.target.dataset.title); -->
+<script>
+	window.addEventListener("load", function () {
+		var mainCategory = document.querySelector("#main-category");
+		var subCategory = document.querySelector("#sub-category");
+
+		mainCategory.onchange = function (e) {
+			var id = mainCategory.value;
+
+			var request = new XMLHttpRequest();
+			request.onload = function (event) {
+				var list = JSON.parse(request.responseText);
+				//alert(list[0].title);
+
+				//콤보박스 모든 항목 지우기
+				subCategory.innerHTML = "";
+
+				//기본 선택 옵션 추가하기
+				var option = document.createElement("option");
+				option.value = 0;
+				option.textContent = "분류선택";
+
+				subCategory.appendChild(option);
+
+				//검색 옵션 추가하기
+				for (var i = 0; i < list.length; i++) {
+					option = document.createElement("option");
+
+					option.value = list[i].id;
+					option.textContent = list[i].title;
+
+					subCategory.appendChild(option);
+				}
+				/* var option = document.createElement("option");
+				option.value=list[0].id;
+				option.textContent = list[0].title; */
+
+			};
+
+			request.open("GET", "/MavenPrj/category?id=" + id);
+			request.send(null);
+
+		};
+	});
+
+</script>
+
+<div id="notice">
+	[자세히]
+	<!--<div>
+		대분류 <select id="main-category">
+				<option value="0">지역</option>
+				<option value="1">서울</option>
+				<option value="2">경기</option>
+				<option value="3">강원</option>
+				<option value="4">신촌</option>
+				<option value="5">제주</option>
+			</select> 중분류 <select id="sub-category">
+				<option>분류선택</option>
+			</select>
+	</div>-->
+</div>
+
+<!-- 이름 붙힐때는 쭉 이어서 말을 만들어본다. lectures-logo-img (렉처 로고 이미지) 이렇게 말이 되면 좋겠네 -->
+<main class="lecture"> 강좌목로크 
+	<ul class="list">
+		<li class="item event">
+			<div class="logo">
+				<picture>
+					<source 
+						media="(min-width:640px)" 
+						srcset="images/lecture/spring-di.png" />
+								<!--"images/lecture/spring-dixx.png x2" />-->
+						<img class="img" src="images/img-spring-sm.png"/>
+				</picture>
+			</div>
+			<div class="info">
+				<!-- 계층도를 맞춰주기 위해 한개짜리 span(칸막이)에도 div(층)를 만들어줬다. -->
+				<div class="header">
+					<span class="title">스프링 MVC 웹 프로그래밍</span>
+				</div>
+				<div class="price">
+					<span class="normal deprecated"><span>99000</span>원</span>
+					<span class="event"><span class="color-red">10000</span>원</span>
+				</div>
+				<!-- 저작자 정보를 나타내는 footer -->
+				<div class="footer">
+					<span class="writer">newlec</span>
+					<span class="update">수정일 : 2017-05-29</span>
+				</div>
+			</div>
+		</li>
+		<li class="item normal">
+			<div class="logo">
+				<picture>
+					<source 
+						media="(min-width:640px)" 
+						srcset="images/lecture/oracle-sql.png" />
+				<img class="img" src="images/img-oracle-sm.png"/>
+				</picture>
+			</div>
+			<div class="info">
+				<div class="header">
+					<span>오라클 PL/SQL</span>
+				</div>
+				<div class="price">
+					<span class="normal"><span>99000</span>원</span>
+				</div>
+				<div class="footer">
+					<span class="writer">newlec</span>
+					<span class="update">수정일 : 2017-05-29</span>
+				</div>
+			</div>
+		</li>
+		<li class="item new">
+			<div class="logo">
+				<picture>
+					<source 
+						media="(min-width:640px)" 
+						srcset="images/lecture/javascript.png" />
+				<img class="img" src="images/img-javascript-sm.png"/>
+				</picture>
+			</div>
+			<div class="info">
+				<div class="header">
+					<span>DOM + JAVASCRIPT</span>
+				</div>
+				<div class="price">
+					<span class="normal"><span>99000</span>원</span>
+				</div>
+				<div class="footer">
+					<span class="writer">newlec</span>
+					<span class="update">수정일 : 2017-05-29</span>
+				</div>
+			</div>
+		</li>
+		<li class="item event">
+			<div class="logo">
+				<picture>
+					<source
+						media="(min-width:640px)"
+						srcset="images/lecture/spring-di.png" />
+						<!-- 밀도에 따라 X1, X2등 가능-->
+						<img class="img" src="images/img-spring-sm.png"/>
+				</picture>
+			</div>
+			<div class="info">
+				<!-- 계층도를 맞춰주기 위해 한개짜리 span(칸막이)에도 div(층)를 만들어줬다. -->
+				<div class="header">
+					<span class="title">스프링 MVC 웹 프로그래밍</span>
+				</div>
+				<div class="price">
+					<span class="normal deprecated"><span>99000</span>원</span>
+					<span class="event"><span class="color-red">10000</span>원</span>
+				</div>
+				<!-- 저작자 정보를 나타내는 footer -->
+				<div class="footer">
+					<span class="writer">newlec</span>
+					<span class="update">수정일 : 2017-05-29</span>
+				</div>
+			</div>
+		</li>
+		<li class="item normal">
+			<div class="logo">
+				<picture>
+					<source
+						media="(min-width:640px)" 
+						srcset="images/lecture/oracle-sql.png" />
+				<img class="img" src="images/img-oracle-sm.png"/>
+				</picture>
+			</div>
+			<div class="info">
+				<div class="header">
+					<span>오라클 PL/SQL</span>
+				</div>
+				<div class="price">
+					<span class="normal"><span>99000</span>원</span>
+				</div>
+				<div class="footer">
+					<span class="writer">newlec</span>
+					<span class="update">수정일 : 2017-05-29</span>
+				</div>
+			</div>
+		</li>
+		<li class="item new">
+			<div class="logo">
+				<picture>
+					<source 
+						media="(min-width:640px)" 
+						srcset="images/lecture/javascript.png" />
+				<img class="img" src="images/img-javascript-sm.png"/>
+				</picture>
+			</div>
+			<div class="info">
+				<div class="header">
+					<span>DOM + JAVASCRIPT</span>
+				</div>
+				<div class="price">
+					<span class="normal"><span>99000</span>원</span>
+				</div>
+				<div class="footer">
+					<span class="writer">newlec</span>
+					<span class="update">수정일 : 2017-05-29</span>
+				</div>
+			</div>
+		</li>
+	</ul>
+</main>
+<footer id="footer"> Copyright ⓒ newlecture.com </footer>
+</body>
+
+</html>

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<!--ng : 엥귤러의 약자-->
+<html ng-app ="calc-app">
+    <head>
+        <meta charset="UTF-8">
+        <title>Insert title here</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <script>
+             // 자바스크립트가 수행하지 못한 지역화
+
+             //clacAppModule을 선언해주었어요. calc-app이라는 모듈을 사용하게 된답니당. (메인메소드 같은 존재)
+          var calcAppModule = angular.module("calc-app",[]);
+
+            //컨트롤러를 정의하고 해당 컨트롤러의 스코프에 모델을 정의한다.
+            calcAppModule.controller("calc-controller", function($scope){
+                $scope.hi = "히히";
+                $scope.x= 0;
+                $scope.y= 0;
+                //notices라는 배열 선언(정의)
+                var notices =
+                [
+                    {id:"1", title:"jsp..."},
+                    {id:"2", title:"spring..."},
+                    {id:"3", title:"java..."}
+                ];
+            //배열 생성
+           $scope.notices = notices;
+
+                //함수 생성, $scope랑 this는 좀 차이가 있다.
+                $scope.sumbuttonclick = function(){
+                    $scope.result = $scope.x+  $scope.y;
+                    console.log("완료");
+                };
+
+                 $scope.delbuttonclick = function(){
+                    $scope.notices.length = parseInt($scope.notices.length)-1;
+                    //notices.pop();
+                };
+
+
+            });
+        </script>
+    </head>
+    <body ng-controller ="calc-controller">
+        <h1>{{hi}}</h1>
+        <!--ng-model 투웨이 방식(양방향 바인딩, 클라이언트와 서버의 상호 변환작용)-->
+        x:<input type="number" value="{{x}}" ng-model="x"/>
+        y:<input type="number" value="{{y}}" ng-model="y"/>
+        <input type="button" value="계산" ng-click="sumbuttonclick()"/></br>
+        <!--result:<input value="{{x+y}}"/>-->
+        result:{{x+y}} // 계산했을때의 값은? -> {{result}}
+        <div>
+            <input type="button" value="막내삭제" ng-click="delbuttonclick()" />
+        </div>
+
+        <table border="1">
+           <thead>
+            <tr>
+                <td>번호</td>
+                <td>제목</td>
+                </tr>
+         </thead>
+         <tbody>
+             <!--for문 같은 n in notices-->
+             <tr ng-repeat="n in notices">
+                 <td>{{n.id}}</td>
+                 <td>{{n.title}}</td>
+             </tr>
+             <!--delete : {{delete}}-->
+             </tbody> 
+        </table>
+        
+    </body>
+</html>

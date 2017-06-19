@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.newlecture.web.dao.PlatformDao">
+	
+	<select id="getList" resultType="com.newlecture.web.entity.Platform">
+		SELECT *
+		FROM Platform
+	</select>
+	
+	<select id="get" resultType="com.newlecture.web.entity.Platform">
+		SELECT *
+		FROM Platform
+		WHERE id=#{id}
+	</select>	
+	
+	<insert id="add" parameterType="com.newlecture.web.entity.Platform">
+		<selectKey order="BEFORE" keyProperty="id" resultType="String">
+			SELECT MAX(CAST(id AS UNSIGNED))+1 id FROM Platform
+		</selectKey>
+		INSERT INTO Platform
+		(
+			id,
+			name,
+			version
+		)
+		VALUES
+		(
+			#{id},
+			#{name},
+			#{version}
+		)		
+	</insert>
+	
+	<delete id="delete">
+		DELETE FROM Platform
+		WHERE id=#{id}
+		
+	</delete>
+	
+	<update id="update" parameterType="com.newlecture.web.entity.Platform">
+		UPDATE Platform
+		SET		
+			name = #{name}
+			version = #{version}
+		WHERE id=#{id}
+	</update>
+	
+</mapper>

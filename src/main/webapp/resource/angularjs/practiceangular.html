@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html ng-app = "myApp">
+    <head>
+        <meta charset="UTF-8">
+        <title>controller의 model정의 연습</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.4/angular.min.js"></script>
+        <script>
+        //controller의 역할 중 하나인 "scope에 model을 정의해준다."
+        angular.module('myApp',[]).controller('GreetingController',
+        function($scope){
+           $scope.now = new Date();
+           $scope.greeting = '안녕..';
+        });
+        </script>
+    </head>
+    <body ng-controller="GreetingController">
+        {{greeting}} User! The current data/time is <span> {{now}} </span>
+    </body>
+</html>

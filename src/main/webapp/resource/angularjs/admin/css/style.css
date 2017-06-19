@@ -1,0 +1,22 @@
+@import url("style.desktop.css");
+@import url("style.tablet.css") all and (min-width:641px); 
+@import url("style.mobile.css") all and (max-width:640px);
+/*타블릿과 데스크탑을 또 나누고 싶으면 tablet.css에서 미디어쿼리를 사용한다.*/
+
+/*--------reset Style------------------------------------------------*/
+
+/*--------Common Style------------------------------------------------*/
+table{
+    border-top:2px solid #8cba34;
+    
+}
+
+ul{
+
+}
+/*-------Layout Style------------------------------------------------*/
+
+/*-------Component Style------------------------------------------------*/
+
+
+

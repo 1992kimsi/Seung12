@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/main/java/com/newlecture/web/controller/CustomerController.java=UTF-8
+encoding//src/main/java/com/newlecture/web/dao/mysql/MySQLMemberDao.java=UTF-8
+encoding//src/main/java/com/newlecture/web/dao/mysql/MySQLMemberRoleDao.java=UTF-8
+encoding//src/main/java/com/newlecture/web/dao/mysql/MySQLNoticeDao.java=UTF-8

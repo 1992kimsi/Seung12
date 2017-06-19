@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.newlecture.web.dao.LecturePlatformDao">
+
+	<select id="getList" resultType="com.newlecture.web.entity.LecturePlatform">
+		SELECT *
+	   	FROM LecturePlatform
+	</select>
+	
+	<select id="get" resultType="com.newlecture.web.entity.LecturePlatform">
+		SELECT *
+	   	FROM	LecturePlatform
+	   	WHERE lectureId = #{lectureId} AND platformId = #{platformId}
+	</select>
+
+	<insert id="add" parameterType="com.newlecture.web.entity.LecturePlatform">
+		<selectKey order="BEFORE" keyProperty="id" resultType="String">
+			SELECT MAX(CAST(id AS UNSIGNED))+1 id
+			FROM LecturePlatform
+		</selectKey>
+		INSERT INTO LecturePlatform		
+		VALUES
+		(#{lectureId},
+		#{platformId})
+	</insert>
+
+	<update id="update" parameterType="com.newlecture.web.entity.LecturePlatform">
+		UPDATE LecturePlatform
+		SET
+		lectureId = #{lectureId},
+		platformId = #{platformId}>
+	  	WHERE lectureId = #{lectureId} AND platformId = #{platformId}
+	</update>
+
+	<delete id="delete">
+		DELETE FROM LecturePlatform
+	 	WHERE lectureId = #{lectureId} AND platformId = #{platformId}
+	</delete>
+
+</mapper>

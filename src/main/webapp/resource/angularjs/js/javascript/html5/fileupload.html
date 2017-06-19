@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<style>
+	#upload-zone{
+		background:yellow;
+		width:500px;
+		height: 300px;
+	}
+	
+	#upload-zone.enter{
+		background: pink;
+	}
+	
+	#upload-zone.leave{
+		background: yellow;
+	}
+	
+	input[type='file']{
+		display: none;
+	}
+	
+	#drag-zone{
+		background: gray;
+		width:500px;
+		height: 200px;
+	}
+	
+	#drag-zone > a,
+	#drag-zone img
+	{
+		display:block;
+		background:blue;
+		width:100px;
+		height: 100px;
+	}
+</style>
+<script>
+	$(function(){
+		
+		/* $("#upload-zone").click(function(){
+			$("input[type='file']").trigger("click");
+		}); */
+		
+		$("#drag-zone > a").bind("dragstart", function(event){
+			
+			var dt = event.originalEvent.dataTransfer;
+			dt.effectAllowed = "copy";
+			
+			dt.setData("text/plain", "http://www.mozilla.org");
+			
+			console.log("start");
+		});
+		
+		/* $("#drag-zone > div").bind("drag", function(){
+			console.log("drag");
+		}); */
+		
+		 $("#upload-zone").bind("dragenter", function(){
+			$(this).addClass("enter");
+		
+			console.log("entered");
+		});
+		
+		$("#upload-zone").bind("dragover", function(event){
+			event.originalEvent.preventDefault();
+			
+			console.log("over");
+		});
+		
+		$("#upload-zone").bind("dragleave", function(){
+			$(this).removeClass("enter");
+			console.log("leave");
+		});
+		
+		$("#upload-zone").bind("drop", function(event){
+			
+			event.originalEvent.preventDefault();
+			
+		    var dt = event.originalEvent.dataTransfer;
+		    
+			var validate = dt.types[0].indexOf('Files') >= 0;
+			
+			if(!validate){
+				alert("파일 형식이 아닙니다.");
+				return;
+			}
+			
+			var size = dt.files.length;
+			
+			if(size > 1){
+				alert("두 개 이상의 파일은 전송할 수 없습니다.");
+				return;
+			}			
+			
+			var request = new XMLHttpRequest();
+			//request.onreadyStateChange = function(){};
+			//request.onload = function(){};
+			
+			request.addEventListener("progress", function(){
+				
+			});
+			
+			request.addEventListener("load", function(){
+				
+			});
+			
+			request.addEventListener("error", function(){
+				
+			});
+			
+			request.open("POST", "/MavenPrj/upload");
+			
+			var fd = new FormData();
+			fd.append("file", dt.files[0]);
+			
+			request.send(fd);
+			
+			
+			
+			
+		});
+		
+		
+	});
+	
+	/* function allowDrop(ev) {
+	    ev.preventDefault();
+	}
+
+	function drag(ev) {
+	    ev.dataTransfer.setData("text", ev.target.id);
+	}
+
+	function drop(ev) {
+	    ev.preventDefault();
+	    var data = ev.dataTransfer.getData("text");
+	    ev.target.appendChild(document.getElementById(data));
+	} */
+	
+</script>
+</head>
+<body>
+	<div id="upload-zone">
+		업로드할 파일을 선택 또는 끌어 놓기
+	</div>
+	<div id="drag-zone">
+		<a draggable="true" href="http://www.google.com">헤헤</a>
+		<img src="https://www.tourboks.com/assets/media/SUPPLIERS/VN-000263/koy-lipe-activities_19445.jpg" />		
+	</div>
+	<input type="file" />
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
